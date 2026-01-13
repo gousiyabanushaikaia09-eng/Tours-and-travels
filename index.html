@@ -904,10 +904,34 @@ document.querySelectorAll('.card.package .btn.btn-primary').forEach(btn => {
     console.log("Adobe DL updated:", window.adobeDataLayer);
   });
 });
+  // 1. Initialize the Data Layer
+  window.adobeDataLayer = window.adobeDataLayer || [];
+
+  // 2. Create a Listener that fires whenever a new event is pushed
+  window.adobeDataLayer.push(function(dl) {
+    // Get the most recent item pushed to the array
+    const lastUpdate = dl[dl.length - 1];
+
+    // Check if there is an event name to display
+    if (lastUpdate.event) {
+      console.log(`%c✨ EVENT DETECTED: ${lastUpdate.event}`, "color: #ff7a59; font-weight: bold; font-size: 12px;");
+      
+      // Clear display of the associated data
+      console.dir(lastUpdate); 
+      
+      // Optional: Visual separator for the console
+      console.log("%c----------------------------------", "color: #444");
+    }
+  });
+
+  // Example: How to trigger your events so they show up clearly
+  // Make sure your buttons use something like:
+  // onclick="window.adobeDataLayer.push({event: 'ctaClick', ctaName: 'Book Trip'})"
 
   </script>
 </body>
 </html>
+
 
 
 
