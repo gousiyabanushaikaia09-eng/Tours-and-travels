@@ -11,6 +11,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+ <script>
+  window.adobeDataLayer = window.adobeDataLayer || [];
+
+  // Page load details
+  window.adobeDataLayer.push({
+    event: "pageLoad",
+    page: {
+      pageName: document.title,
+      destination: "generic",   // can be updated dynamically
+      travelType: "all"         // adventure, family, luxury, etc.
+    }
+  });
+</script>
+
   <style>
     :root{
       --bg:#0b0f14;
@@ -832,8 +847,57 @@
     };
     setShadow();
     window.addEventListener('scroll', setShadow);
+   // Adobe Client Data Layer: CTA Click Tracking
+document.querySelectorAll('.btn.btn-primary').forEach(btn => {
+  btn.addEventListener('click', function(){
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    window.adobeDataLayer.push({
+      event: "ctaClick",
+      cta: { type: "Book a Trip", label: this.innerText }
+    });
+    console.log("Adobe DL updated:", window.adobeDataLayer);
+  });
+});
+
+document.querySelectorAll('.btn').forEach(btn => {
+  if(btn.innerText.includes("Enquire")){
+    btn.addEventListener('click', function(){
+      window.adobeDataLayer = window.adobeDataLayer || [];
+      window.adobeDataLayer.push({
+        event: "ctaClick",
+        cta: { type: "Enquire", label: this.innerText }
+      });
+      console.log("Adobe DL updated:", window.adobeDataLayer);
+    });
+  }
+});
+
+// Adobe Client Data Layer: Purchase Event Tracking
+document.querySelectorAll('.card.package .btn.btn-primary').forEach(btn => {
+  btn.addEventListener('click', function(){
+    const card = this.closest('.card.package');
+    const packageName = card.querySelector('h3')?.innerText;
+    const priceText = card.querySelector('.price')?.innerText || "";
+    const nights = [...card.querySelectorAll('.features .pill')]
+                    .find(p => p.innerText.includes("nights"))?.innerText || "";
+
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    window.adobeDataLayer.push({
+      event: "purchase",
+      ecommerce: {
+        package: packageName,
+        price: priceText.replace(/[^\d]/g, ""),
+        nights: nights,
+        currency: "INR"
+      }
+    });
+    console.log("Adobe DL updated:", window.adobeDataLayer);
+  });
+});
+
   </script>
 </body>
 </html>
+
 
 
