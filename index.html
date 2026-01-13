@@ -791,6 +791,16 @@
   </footer>
 
   <script>
+   window.adobeDataLayer = window.adobeDataLayer || [];
+window.adobeDataLayer.push({
+    "page": {
+        "pageName": document.title,
+        "language": "en-IN",
+        "siteSection": "Travel Packages",
+        "server": "GitHub Pages" // or your hosting provider
+    },
+    "event": "pageView" // Trigger the rule in Launch using this event
+});
     // Mobile drawer toggle
     const hamburger = document.getElementById('hamburger');
     const drawer = document.getElementById('drawer');
@@ -898,6 +908,7 @@ document.querySelectorAll('.card.package .btn.btn-primary').forEach(btn => {
   </script>
 </body>
 </html>
+
 
 
 
