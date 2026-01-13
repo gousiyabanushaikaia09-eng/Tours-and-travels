@@ -1,6 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+  window.digitalData = {
+    page: {
+      pageName: document.title,
+      pageCategory: "Travel Website",
+      url: window.location.href
+    },
+    user: {
+      loginStatus: "guest",   // update to "logged-in" if applicable
+      userType: "visitor"
+    },
+    destinationSearch: {
+      destination: null,
+      travelDates: null,
+      travelStyle: null
+    },
+    events: []
+  };
+
+  // Example: capture trip search
+  document.querySelector('.search-btn')?.addEventListener('click', function(){
+    window.digitalData.destinationSearch.destination = 
+      document.querySelector('input[placeholder="e.g., Bali, Paris, Kyoto"]').value;
+    window.digitalData.destinationSearch.travelDates = 
+      document.querySelector('input[placeholder="DD/MM/YYYY – DD/MM/YYYY"]').value;
+    window.digitalData.destinationSearch.travelStyle = 
+      document.querySelector('select').value;
+
+    window.digitalData.events.push({
+      event: "tripSearch",
+      details: {
+        destination: window.digitalData.destinationSearch.destination,
+        travelStyle: window.digitalData.destinationSearch.travelStyle
+      }
+    });
+    console.log("Data Layer updated:", window.digitalData);
+  });
+
+  // Example: capture package enquiry
+  document.querySelectorAll('.btn.btn-primary').forEach(btn => {
+    btn.addEventListener('click', function(){
+      const packageName = this.closest('.card')?.querySelector('h3')?.innerText;
+      window.digitalData.events.push({
+        event: "packageEnquiry",
+        details: { package: packageName }
+      });
+      console.log("Data Layer updated:", window.digitalData);
+    });
+  });
+
+  // Example: capture contact form submission
+  document.getElementById('enquiryForm')?.addEventListener('submit', function(){
+    window.digitalData.events.push({
+      event: "formSubmit",
+      details: { form: "contactUs" }
+    });
+    console.log("Data Layer updated:", window.digitalData);
+  });
+</script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Voyage — Explore, Dream, Discover</title>
@@ -833,3 +893,4 @@
   </script>
 </body>
 </html>
+
